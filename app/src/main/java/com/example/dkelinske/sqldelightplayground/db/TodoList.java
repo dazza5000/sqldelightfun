@@ -15,6 +15,7 @@
  */
 package com.example.dkelinske.sqldelightplayground.db;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Parcelable;
 
@@ -26,18 +27,37 @@ import rx.functions.Func1;
 
 // Note: normally I wouldn't prefix table classes but I didn't want 'List' to be overloaded.
 @AutoValue
-public abstract class TodoList implements TodoListModel, Parcelable {
+public abstract class TodoList implements Parcelable {
+    public static final String TABLE = "todo_list";
 
-    @SuppressWarnings("StaticInitializerReferencesSubClass")
-    public static Factory<TodoList> FACTORY = new Factory<>(AutoValue_TodoList::new);
+    public static final String ID = "_id";
+    public static final String NAME = "name";
+    public static final String ARCHIVED = "archived";
 
-    public static RowMapper<String> NAME_MAPPER = FACTORY.select_name_by_idMapper();
+    public abstract long id();
+    public abstract String name();
+    public abstract boolean archived();
 
-    public static RowMapper<ListsItem> LISTS_ITEM_MAPPER =
-            FACTORY.select_lists_with_item_countsMapper(AutoValue_TodoList_ListsItem::new);
+    public static final class Builder {
+        private final ContentValues values = new ContentValues();
 
-    public static Func1<Cursor, ListsItem> LISTS_ITEM_MAPPER_FUNCTION = LISTS_ITEM_MAPPER::map;
+        public Builder id(long id) {
+            values.put(ID, id);
+            return this;
+        }
 
-    @AutoValue
-    public static abstract class ListsItem implements Select_lists_with_item_countsModel {}
+        public Builder name(String name) {
+            values.put(NAME, name);
+            return this;
+        }
+
+        public Builder archived(boolean archived) {
+            values.put(ARCHIVED, archived);
+            return this;
+        }
+
+        public ContentValues build() {
+            return values; // TODO defensive copy?
+        }
+    }
 }

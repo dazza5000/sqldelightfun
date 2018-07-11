@@ -15,6 +15,7 @@
  */
 package com.example.dkelinske.sqldelightplayground.db;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Parcelable;
 
@@ -22,17 +23,59 @@ import com.example.dkelinske.sqldelightplayground.data.TodoItemModel;
 import com.google.auto.value.AutoValue;
 import com.squareup.sqldelight.RowMapper;
 
+import java.util.function.Function;
+
 import rx.functions.Func1;
 
 @AutoValue
-public abstract class TodoItem implements TodoItemModel, Parcelable {
+public abstract class TodoItem implements Parcelable {
+    public static final String TABLE = "todo_item";
 
-    @SuppressWarnings("StaticInitializerReferencesSubClass")
-    public static final Factory<TodoItem> FACTORY = new Factory<>(AutoValue_TodoItem::new);
+    public static final String ID = "_id";
+    public static final String LIST_ID = "todo_list_id";
+    public static final String DESCRIPTION = "description";
+    public static final String COMPLETE = "complete";
 
-    public static final RowMapper<TodoItem> MAPPER = FACTORY.select_all_items_for_listMapper();
+    public abstract long id();
+    public abstract long listId();
+    public abstract String description();
+    public abstract boolean complete();
 
-    public static final RowMapper<Long> COUNT_MAPPER = FACTORY.count_active_items_for_listMapper();
+    public static final Function<Cursor, TodoItem> MAPPER = new Function<Cursor, TodoItem>() {
+        @Override public TodoItem apply(Cursor cursor) {
+            long id = Db.getLong(cursor, ID);
+            long listId = Db.getLong(cursor, LIST_ID);
+            String description = Db.getString(cursor, DESCRIPTION);
+            boolean complete = Db.getBoolean(cursor, COMPLETE);
+            return new AutoValue_TodoItem(id, listId, description, complete);
+        }
+    };
 
-    public static final Func1<Cursor, TodoItem> MAPPER_FUNCTION = MAPPER::map;
+    public static final class Builder {
+        private final ContentValues values = new ContentValues();
+
+        public Builder id(long id) {
+            values.put(ID, id);
+            return this;
+        }
+
+        public Builder listId(long listId) {
+            values.put(LIST_ID, listId);
+            return this;
+        }
+
+        public Builder description(String description) {
+            values.put(DESCRIPTION, description);
+            return this;
+        }
+
+        public Builder complete(boolean complete) {
+            values.put(COMPLETE, complete ? Db.BOOLEAN_TRUE : Db.BOOLEAN_FALSE);
+            return this;
+        }
+
+        public ContentValues build() {
+            return values; // TODO defensive copy?
+        }
+    }
 }
