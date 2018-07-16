@@ -55,19 +55,19 @@ public class MainActivity extends AppCompatActivity {
 
         listView = findViewById(android.R.id.list);
 
-//        listener = (Listener) this;
-//        adapter = new ListsAdapter(this);
-
-        SqlBrite.Builder builder = new SqlBrite.Builder();
-        BriteDatabase database = builder.build().wrapDatabaseHelper(new DbOpenHelper(this), Schedulers.io());
-        SqlDelightStatement statement = TodoList.FACTORY.select_name_by_id(1);
-        Observable<String> todoListName = database.createQuery(statement.tables, statement.statement, statement.args).mapToOne(TodoList.FACTORY.select_name_by_idMapper()::map);
-        todoListName.subscribe(new Action1<String>() {
+        listener = new Listener() {
             @Override
-            public void call(String s) {
-                Log.e("Darran", "The todo list name is: " +s);
+            public void onListClicked(long id) {
+
             }
-        });
+
+            @Override
+            public void onNewListClicked() {
+
+            }
+        };
+
+        adapter = new ListsAdapter(this);
 
     }
 
@@ -76,15 +76,23 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
 
-//        subscription = db.createQuery(ListsItem.TABLES, ListsItem.QUERY)
-//                .mapToList(ListsItem.MAPPER)
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(adapter);
+        SqlBrite.Builder builder = new SqlBrite.Builder();
+        db = builder.build().wrapDatabaseHelper(new DbOpenHelper(this), Schedulers.io());
+        SqlDelightStatement statement = TodoList.FACTORY.select_name_by_id(1);
+
+        Observable<String >todoListNameObservable = db.createQuery(statement.tables, statement.statement, statement.args).mapToOne(TodoList.FACTORY.select_name_by_idMapper()::map);
+        subscription = todoListNameObservable.subscribe(new Action1<String>() {
+            @Override
+            public void call(String s) {
+                Log.e("Darran", "The todo list name is: " +s);
+            }
+        });
+
     }
 
     @Override
     public void onPause() {
         super.onPause();
-//        subscription.unsubscribe();
+        subscription.unsubscribe();
     }
 }
