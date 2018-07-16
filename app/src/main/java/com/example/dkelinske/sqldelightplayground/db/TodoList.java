@@ -16,10 +16,16 @@
 package com.example.dkelinske.sqldelightplayground.db;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.example.dkelinske.sqldelightplayground.data.TodoListModel;
 import com.google.auto.value.AutoValue;
+import com.squareup.sqldelight.RowMapper;
+
+import rx.functions.Func1;
 
 // Note: normally I wouldn't prefix table classes but I didn't want 'List' to be overloaded.
 @AutoValue
@@ -30,8 +36,23 @@ public abstract class TodoList implements TodoListModel, Parcelable {
     public static final String NAME = "name";
     public static final String ARCHIVED = "archived";
 
-    public abstract long id();
-    public abstract String name();
+    @SuppressWarnings("StaticInitializerReferencesSubClass")
+    public static Factory<TodoList> FACTORY = new Factory<>(new TodoListModel.Creator<TodoList>() {
+        @Override
+        public TodoList create(long _id, @NonNull String name, @Nullable Boolean archived) {
+            return new AutoValue_TodoList(_id, name, archived);
+        }
+    });
+
+    public static RowMapper<String> NAME_MAPPER = FACTORY.select_name_by_idMapper();
+
+    public static RowMapper<ListsItem> LISTS_ITEM_MAPPER =
+            FACTORY.select_lists_with_item_countsMapper(AutoValue_TodoList_ListsItem::new);
+
+    public static Func1<Cursor, ListsItem> LISTS_ITEM_MAPPER_FUNCTION = LISTS_ITEM_MAPPER::map;
+
+    @AutoValue
+    public static abstract class ListsItem implements Select_lists_with_item_countsModel {}
 
     public static final class Builder {
         private final ContentValues values = new ContentValues();

@@ -3,16 +3,21 @@ package com.example.dkelinske.sqldelightplayground;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ListView;
 
-
+import com.example.dkelinske.sqldelightplayground.db.DbOpenHelper;
+import com.example.dkelinske.sqldelightplayground.db.TodoList;
 import com.squareup.sqlbrite.BriteDatabase;
+import com.squareup.sqlbrite.QueryObservable;
+import com.squareup.sqlbrite.SqlBrite;
+import com.squareup.sqldelight.SqlDelightStatement;
 
-
+import rx.Observable;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -49,8 +54,15 @@ public class MainActivity extends AppCompatActivity {
 
         listView = findViewById(android.R.id.list);
 
-        listener = (Listener) this;
-        adapter = new ListsAdapter(this);
+//        listener = (Listener) this;
+//        adapter = new ListsAdapter(this);
+
+        SqlBrite.Builder builder = new SqlBrite.Builder();
+        BriteDatabase database = builder.build().wrapDatabaseHelper(new DbOpenHelper(this), Schedulers.io());
+        SqlDelightStatement statement = TodoList.FACTORY.select_name_by_id(1);
+        Observable<String> todoListName = database.createQuery(statement.tables, statement.statement, statement.args).mapToOne(TodoList.FACTORY.select_name_by_idMapper()::map);
+        Log.e("Darran", "The todo list name is: " +todoListName);
+
     }
 
 
@@ -67,6 +79,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onPause() {
         super.onPause();
-        subscription.unsubscribe();
+//        subscription.unsubscribe();
     }
 }
