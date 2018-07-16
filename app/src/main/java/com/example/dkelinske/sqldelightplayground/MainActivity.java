@@ -17,6 +17,7 @@ import com.squareup.sqldelight.SqlDelightStatement;
 
 import rx.Observable;
 import rx.Subscription;
+import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
@@ -61,7 +62,12 @@ public class MainActivity extends AppCompatActivity {
         BriteDatabase database = builder.build().wrapDatabaseHelper(new DbOpenHelper(this), Schedulers.io());
         SqlDelightStatement statement = TodoList.FACTORY.select_name_by_id(1);
         Observable<String> todoListName = database.createQuery(statement.tables, statement.statement, statement.args).mapToOne(TodoList.FACTORY.select_name_by_idMapper()::map);
-        Log.e("Darran", "The todo list name is: " +todoListName);
+        todoListName.subscribe(new Action1<String>() {
+            @Override
+            public void call(String s) {
+                Log.e("Darran", "The todo list name is: " +s);
+            }
+        });
 
     }
 
