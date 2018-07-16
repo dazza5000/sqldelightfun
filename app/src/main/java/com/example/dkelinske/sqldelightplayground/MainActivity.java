@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         db = builder.build().wrapDatabaseHelper(new DbOpenHelper(this), Schedulers.io());
         SqlDelightStatement statement = TodoList.FACTORY.select_name_by_id(1);
 
-        Observable<String >todoListNameObservable = db.createQuery(statement.tables, statement.statement, statement.args).mapToOne(TodoList.FACTORY.select_name_by_idMapper()::map);
+        Observable<String> todoListNameObservable = db.createQuery(statement.tables, statement.statement, statement.args).mapToOne(TodoList.FACTORY.select_name_by_idMapper()::map);
         subscription = todoListNameObservable.subscribe(new Action1<String>() {
             @Override
             public void call(String s) {
