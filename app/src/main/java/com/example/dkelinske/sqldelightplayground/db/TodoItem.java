@@ -21,25 +21,17 @@ import android.os.Parcelable;
 
 import com.example.dkelinske.sqldelightplayground.data.TodoItemModel;
 import com.google.auto.value.AutoValue;
-import com.squareup.sqldelight.RowMapper;
 
 import java.util.function.Function;
 
-import rx.functions.Func1;
-
 @AutoValue
-public abstract class TodoItem implements Parcelable {
+public abstract class TodoItem implements TodoItemModel {
     public static final String TABLE = "todo_item";
 
     public static final String ID = "_id";
     public static final String LIST_ID = "todo_list_id";
     public static final String DESCRIPTION = "description";
     public static final String COMPLETE = "complete";
-
-    public abstract long id();
-    public abstract long listId();
-    public abstract String description();
-    public abstract boolean complete();
 
     public static final Function<Cursor, TodoItem> MAPPER = new Function<Cursor, TodoItem>() {
         @Override public TodoItem apply(Cursor cursor) {
@@ -50,32 +42,4 @@ public abstract class TodoItem implements Parcelable {
             return new AutoValue_TodoItem(id, listId, description, complete);
         }
     };
-
-    public static final class Builder {
-        private final ContentValues values = new ContentValues();
-
-        public Builder id(long id) {
-            values.put(ID, id);
-            return this;
-        }
-
-        public Builder listId(long listId) {
-            values.put(LIST_ID, listId);
-            return this;
-        }
-
-        public Builder description(String description) {
-            values.put(DESCRIPTION, description);
-            return this;
-        }
-
-        public Builder complete(boolean complete) {
-            values.put(COMPLETE, complete ? Db.BOOLEAN_TRUE : Db.BOOLEAN_FALSE);
-            return this;
-        }
-
-        public ContentValues build() {
-            return values; // TODO defensive copy?
-        }
-    }
 }

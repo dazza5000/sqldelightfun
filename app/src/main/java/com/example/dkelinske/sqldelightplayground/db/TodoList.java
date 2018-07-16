@@ -16,18 +16,14 @@
 package com.example.dkelinske.sqldelightplayground.db;
 
 import android.content.ContentValues;
-import android.database.Cursor;
 import android.os.Parcelable;
 
 import com.example.dkelinske.sqldelightplayground.data.TodoListModel;
 import com.google.auto.value.AutoValue;
-import com.squareup.sqldelight.RowMapper;
-
-import rx.functions.Func1;
 
 // Note: normally I wouldn't prefix table classes but I didn't want 'List' to be overloaded.
 @AutoValue
-public abstract class TodoList implements Parcelable {
+public abstract class TodoList implements TodoListModel, Parcelable {
     public static final String TABLE = "todo_list";
 
     public static final String ID = "_id";
@@ -36,7 +32,6 @@ public abstract class TodoList implements Parcelable {
 
     public abstract long id();
     public abstract String name();
-    public abstract boolean archived();
 
     public static final class Builder {
         private final ContentValues values = new ContentValues();

@@ -58,11 +58,10 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
 
-
-        subscription = db.createQuery(ListsItem.TABLES, ListsItem.QUERY)
-                .mapToList(ListsItem.MAPPER)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(adapter);
+//        subscription = db.createQuery(ListsItem.TABLES, ListsItem.QUERY)
+//                .mapToList(ListsItem.MAPPER)
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(adapter);
     }
 
     @Override

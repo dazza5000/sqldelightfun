@@ -19,9 +19,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.dkelinske.sqldelightplayground.data.TodoItemModel;
-import com.example.dkelinske.sqldelightplayground.data.TodoListModel;
-
 
 final class DbOpenHelper extends SQLiteOpenHelper {
     private static final int VERSION = 1;
@@ -35,46 +32,46 @@ final class DbOpenHelper extends SQLiteOpenHelper {
         db.execSQL(TodoList.CREATE_TABLE);
         db.execSQL(TodoItem.CREATE_TABLE);
 
-        final TodoList.Insert_todo_list insertTodoList = new TodoListModel.Insert_todo_list(db);
-        final TodoList.Insert_archived_todo_list insertArchivedTodoList = new TodoListModel
-                .Insert_archived_todo_list(db);
-        final TodoItem.Insert_todo_item insertTodoItem = new TodoItemModel.Insert_todo_item(db);
-        final TodoItem.Insert_completed_todo_item insertCompletedTodoItem = new TodoItemModel
-                .Insert_completed_todo_item(db);
-
-        insertTodoList.bind("Grocery List");
-        long groceryListId = insertTodoList.program.executeInsert();
-        insertTodoItem.bind(groceryListId, "Beer");
-        insertTodoItem.program.executeInsert();
-        insertTodoItem.bind(groceryListId, "Point Break on DVD");
-        insertTodoItem.program.executeInsert();
-        insertTodoItem.bind(groceryListId, "Bad Boys 2 on DVD");
-        insertTodoItem.program.executeInsert();
-
-        insertTodoList.bind("Holiday Presents");
-        long holidayPresentsListId = insertTodoList.program.executeInsert();
-        insertTodoItem.bind(holidayPresentsListId, "Pogo Stick for Jake W.");
-        insertTodoItem.program.executeInsert();
-        insertTodoItem.bind(holidayPresentsListId, "Jack-in-the-box for Alec S.");
-        insertTodoItem.program.executeInsert();
-        insertTodoItem.bind(holidayPresentsListId, "Pogs for Matt P.");
-        insertTodoItem.program.executeInsert();
-        insertTodoItem.bind(holidayPresentsListId, "Cola for Jesse W.");
-        insertTodoItem.program.executeInsert();
-
-        insertTodoList.bind("Work Items");
-        long workListId = insertTodoList.program.executeInsert();
-        insertCompletedTodoItem.bind(workListId, "Finish SqlBrite library", true);
-        insertCompletedTodoItem.program.executeInsert();
-        insertTodoItem.bind(workListId, "Finish SqlBrite sample app");
-        insertTodoItem.program.executeInsert();
-        insertTodoItem.bind(workListId, "Publish SqlBrite to GitHub");
-        insertTodoItem.program.executeInsert();
-
-        insertArchivedTodoList.bind("Birthday Presents", true);
-        long birthdayPresentsListId = insertArchivedTodoList.program.executeInsert();
-        insertCompletedTodoItem.bind(birthdayPresentsListId, "New car", true);
-        insertCompletedTodoItem.program.executeInsert();
+//        final TodoList.Insert_todo_list insertTodoList = new TodoListModel.Insert_todo_list(db);
+//        final TodoList.Insert_archived_todo_list insertArchivedTodoList = new TodoListModel
+//                .Insert_archived_todo_list(db);
+//        final TodoItem.Insert_todo_item insertTodoItem = new TodoItemModel.Insert_todo_item(db);
+//        final TodoItem.Insert_completed_todo_item insertCompletedTodoItem = new TodoItemModel
+//                .Insert_completed_todo_item(db);
+//
+//        insertTodoList.bind("Grocery List");
+//        long groceryListId = insertTodoList.program.executeInsert();
+//        insertTodoItem.bind(groceryListId, "Beer");
+//        insertTodoItem.program.executeInsert();
+//        insertTodoItem.bind(groceryListId, "Point Break on DVD");
+//        insertTodoItem.program.executeInsert();
+//        insertTodoItem.bind(groceryListId, "Bad Boys 2 on DVD");
+//        insertTodoItem.program.executeInsert();
+//
+//        insertTodoList.bind("Holiday Presents");
+//        long holidayPresentsListId = insertTodoList.program.executeInsert();
+//        insertTodoItem.bind(holidayPresentsListId, "Pogo Stick for Jake W.");
+//        insertTodoItem.program.executeInsert();
+//        insertTodoItem.bind(holidayPresentsListId, "Jack-in-the-box for Alec S.");
+//        insertTodoItem.program.executeInsert();
+//        insertTodoItem.bind(holidayPresentsListId, "Pogs for Matt P.");
+//        insertTodoItem.program.executeInsert();
+//        insertTodoItem.bind(holidayPresentsListId, "Cola for Jesse W.");
+//        insertTodoItem.program.executeInsert();
+//
+//        insertTodoList.bind("Work Items");
+//        long workListId = insertTodoList.program.executeInsert();
+//        insertCompletedTodoItem.bind(workListId, "Finish SqlBrite library", true);
+//        insertCompletedTodoItem.program.executeInsert();
+//        insertTodoItem.bind(workListId, "Finish SqlBrite sample app");
+//        insertTodoItem.program.executeInsert();
+//        insertTodoItem.bind(workListId, "Publish SqlBrite to GitHub");
+//        insertTodoItem.program.executeInsert();
+//
+//        insertArchivedTodoList.bind("Birthday Presents", true);
+//        long birthdayPresentsListId = insertArchivedTodoList.program.executeInsert();
+//        insertCompletedTodoItem.bind(birthdayPresentsListId, "New car", true);
+//        insertCompletedTodoItem.program.executeInsert();
     }
 
     @Override
