@@ -21,6 +21,7 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.example.dkelinske.sqldelightplayground.data.TodoItemModel;
 import com.example.dkelinske.sqldelightplayground.data.TodoListModel;
 import com.google.auto.value.AutoValue;
 import com.squareup.sqldelight.RowMapper;
@@ -54,6 +55,17 @@ public abstract class TodoList implements TodoListModel, Parcelable {
     @AutoValue
     public static abstract class ListsItem implements Select_lists_with_item_countsModel {}
 
+
+    public static final Select_lists_with_itemsCreator<TodoList, TodoItem, ListsWithItems> todoListTodoItemListsWithItemsSelect_lists_with_itemsCreator = new Select_lists_with_itemsCreator<TodoList, TodoItem, ListsWithItems>() {
+        @Override
+        public ListsWithItems create(@NonNull TodoList todo_list, @Nullable TodoItem todo_item) {
+            return null;
+        }
+    };
+
+    public static final RowMapper<ListsWithItems> SELECT_ALL_INFO_MAPPER =
+            FACTORY.select_lists_with_itemsMapper(todoListTodoItemListsWithItemsSelect_lists_with_itemsCreator, TodoItem.FACTORY.creator);
+//
     public static final class Builder {
         private final ContentValues values = new ContentValues();
 

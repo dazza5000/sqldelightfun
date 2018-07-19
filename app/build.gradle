@@ -53,4 +53,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
     implementation rootProject.ext.rxAndroid
+
+    compile 'com.facebook.stetho:stetho:1.5.0'
 }

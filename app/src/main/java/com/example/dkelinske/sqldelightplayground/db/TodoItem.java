@@ -18,6 +18,8 @@ package com.example.dkelinske.sqldelightplayground.db;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.example.dkelinske.sqldelightplayground.data.TodoItemModel;
 import com.google.auto.value.AutoValue;
@@ -32,6 +34,13 @@ public abstract class TodoItem implements TodoItemModel {
     public static final String LIST_ID = "todo_list_id";
     public static final String DESCRIPTION = "description";
     public static final String COMPLETE = "complete";
+
+    public static Factory<TodoItem> FACTORY = new Factory<>(new TodoItem.Creator<TodoItem>() {
+        @Override
+        public TodoItem create(long _id, long listId, @NonNull String description, @Nullable Boolean archived) {
+            return new AutoValue_TodoItem(_id, listId, description, archived);
+        }
+    });
 
     public static final Function<Cursor, TodoItem> MAPPER = new Function<Cursor, TodoItem>() {
         @Override public TodoItem apply(Cursor cursor) {
