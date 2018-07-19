@@ -64,8 +64,20 @@ public abstract class TodoList implements TodoListModel, Parcelable {
     };
 
     public static final RowMapper<ListsWithItems> SELECT_ALL_INFO_MAPPER =
-            FACTORY.select_lists_with_itemsMapper(todoListTodoItemListsWithItemsSelect_lists_with_itemsCreator, TodoItem.FACTORY.creator);
-//
+            FACTORY.select_lists_with_itemsMapper(new Factory<ListsWithItems>(new TodoList.Select_lists_with_itemsCreator<TodoList, TodoItem, ListsWithItems>() {
+                @Override
+                public ListsWithItems create(@NonNull TodoList todo_list, @Nullable TodoItem todo_item) {
+                    return new AutoValue_TodoList_ListsWithItems(todo_list, todo_item);
+                }
+            }), TodoItem.FACTORY.creator);
+
+
+    @AutoValue
+    public static abstract class ListsWithItems implements Select_lists_with_itemsModel<TodoList, TodoItem> {
+
+    }
+
+    //
     public static final class Builder {
         private final ContentValues values = new ContentValues();
 
